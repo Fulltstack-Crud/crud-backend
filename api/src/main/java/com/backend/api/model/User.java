@@ -14,17 +14,17 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users_tbl")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private Long id_user;
-    @NotBlank
-    @Column(name = "nome")
-    private String nome;
+    private String id_user;
+    //@NotBlank
+    //@Column(name = "nome")
+    //private String nome;
     @NotBlank
     @Column(name = "login")
     private String login;
@@ -32,6 +32,12 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
     private UserRole role;
+
+    public User(String login, String password, UserRole role){
+        this.login = login;
+        this.password = password;
+        this.role = role;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

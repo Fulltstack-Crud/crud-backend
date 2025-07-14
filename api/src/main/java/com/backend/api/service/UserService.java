@@ -29,8 +29,8 @@ public class UserService {
         return list();
     }
 
-    public List<User> delete(Long id){
-        userRepository.deleteById(id);
+    public List<User> delete(String id){
+        userRepository.deleteById(String.valueOf(id));
         return list();
     }
 
