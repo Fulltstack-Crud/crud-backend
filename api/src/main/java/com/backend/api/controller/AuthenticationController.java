@@ -1,7 +1,9 @@
 package com.backend.api.controller;
 
 import com.backend.api.dto.AuthenticationDTO;
+import com.backend.api.dto.LoginResponseDTO;
 import com.backend.api.dto.RegisterDTO;
+import com.backend.api.infra.security.TokenService;
 import com.backend.api.model.User;
 import com.backend.api.repository.UserRepository;
 import jakarta.validation.Valid;
@@ -25,12 +27,15 @@ public class AuthenticationController {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping("/login")
     public ResponseEntity login (@RequestBody @Valid AuthenticationDTO data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((User) auth.getPrincipal());
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/register")
